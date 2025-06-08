@@ -4,16 +4,56 @@ import Link from "next/link";
 import { useState } from "react";
 import clsx from "clsx";
 
-
-
-const categories: Record<string, string[]> = {
-  Жінки: ["Брюки", "Взуття", "Спідниці", "Кофти", "Сукні", "Футболки"],
-  Чоловіки: ["Брюки", "Взуття", "Кофти", "Футболки"],
-  Дівчата: ["Брюки", "Взуття", "Спідниці", "Кофти", "Сукні", "Футболки"],
-  Хлопці: ["Брюки", "Взуття", "Кофти", "Футболки"],
+type Subcategory = {
+  name: string;
+  slug: string;
 };
 
+const categories: Record<string, Subcategory[]> = {
+  Жінки: [
+    { name: "Брюки", slug: "pants" },
+    { name: "Взуття", slug: "footwear" },
+    { name: "Спідниці", slug: "skirts" },
+    { name: "Кофти", slug: "sweaters" },
+    { name: "Сукні", slug: "dresses" },
+    { name: "Футболки", slug: "tshirts" },
+  ],
+  Чоловіки: [
+    { name: "Брюки", slug: "pants" },
+    { name: "Взуття", slug: "footwear" },
+    { name: "Кофти", slug: "sweaters" },
+    { name: "Футболки", slug: "tshirts" },
+  ],
+  Дівчата: [
+    { name: "Брюки", slug: "pants" },
+    { name: "Взуття", slug: "footwear" },
+    { name: "Спідниці", slug: "skirts" },
+    { name: "Кофти", slug: "sweaters" },
+    { name: "Сукні", slug: "dresses" },
+    { name: "Футболки", slug: "tshirts" },
+  ],
+  Хлопці: [
+    { name: "Брюки", slug: "pants" },
+    { name: "Взуття", slug: "footwear" },
+    { name: "Кофти", slug: "sweaters" },
+    { name: "Футболки", slug: "tshirts" },
+  ],
+};
 
+const categorySlug = (ua: string) => {
+  switch (ua) {
+    case "Жінки":
+      return "women";
+    case "Чоловіки":
+      return "men";
+    case "Дівчата":
+      return "girls";
+    case "Хлопці":
+      return "boys";
+    default:
+      return "";
+  }
+};
 
 export default function CategoryMenu() {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
@@ -26,7 +66,7 @@ export default function CategoryMenu() {
     <div className="w-full border-b bg-white">
       {/* Горизонтальне меню */}
       <nav className="flex overflow-x-auto justify-around px-4 py-2 text-sm font-medium">
-        {Object.keys(categories).map((category:string) => (
+        {Object.keys(categories).map((category) => (
           <button
             key={category}
             onClick={() => handleCategoryClick(category)}
@@ -46,13 +86,13 @@ export default function CategoryMenu() {
       {activeCategory && (
         <div className="bg-gray-50 border-t px-4 py-2">
           <div className="grid grid-cols-2 gap-2 text-sm">
-            {categories[activeCategory].map((sub) => (
+            {categories[activeCategory].map(({ name, slug }) => (
               <Link
-                key={sub}
-                href={`/category/${activeCategory.toLowerCase()}/${sub.toLowerCase()}`}
+                key={slug}
+                href={`/${categorySlug(activeCategory)}/${slug}`}
                 className="text-gray-700 hover:text-black transition-colors"
               >
-                {sub}
+                {name}
               </Link>
             ))}
           </div>

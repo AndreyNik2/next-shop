@@ -2,15 +2,15 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, Heart, User } from "lucide-react";
+import { Menu, X, Heart, User } from "lucide-react";
 import Image from "next/image";
-import CategoryMenu from "./CategoryMenu";
+import CategoryDrawer from "./CategoryDrawer";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="w-full border-b bg-white">
+    <header className="w-full border-b bg-[#F6E768] relative z-50">
       <div className="flex items-center justify-between px-4 py-3 sm:px-6">
         {/* Логотип */}
         <Link href="/" className="flex items-center">
@@ -52,24 +52,17 @@ export default function Header() {
             aria-label="Меню"
             className="text-gray-600 hover:text-black sm:hidden"
           >
-            <Menu className="w-6 h-6" />
+            {menuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
           </button>
         </div>
       </div>
-      <CategoryMenu/>
-      {/* Мобільне випадаюче меню */}
-      {menuOpen && (
-        <div className="px-4 pb-4 sm:hidden">
-          <nav className="flex flex-col space-y-2 text-sm">
-            <Link href="/delivery">Умови доставки</Link>
-            <Link href="/payment">Оплата</Link>
-            <Link href="/favorites">Улюблені</Link>
-            <Link href="/login">Увійти</Link>
-          </nav>
-        </div>
-      )}
+
+      {/* Drawer */}
+      <CategoryDrawer isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
     </header>
   );
 }
-
-
